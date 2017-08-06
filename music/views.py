@@ -15,5 +15,6 @@ def detail(request, album_id):
     album = get_object_or_404(Album, pk=album_id)
     return render(request, 'music/detail.html', {'album': album})
 
+
 def favorite(request, album_id):
     return "eiei"

@@ -4,8 +4,19 @@
 
 <h3>{{ album.artist}}</h3>
 
-<ul>
-    {% for song in album.song_set.all %}
-    <li>{{ song.song_title}} - {{ song.file_type }}</li>
-    {% endfor %}
-</ul>
+
+{% if error_message %}
+<p><strong>{{ error_message }}</strong></p>
+{% endif %}
+
+<form action="{% url 'music:favorite' album.id %}" method="post">
+    {% csrf_token %} {% for song in album.song_set.all %}
+    <input type="radio" id="song{{forloop.counter}}" value="{{song.id}}">
+    <label for="song{{forloop.counter}}">
+            {{ song.song_title}}
+     </label>
+     {% if song.is_favorite %}
+        <img  width="64" src="http://cdn.mysitemyway.com/etc-mysitemyway/icons/legacy-previews/icons-256/firey-orange-jelly-icons-natural-wonders/050935-firey-orange-jelly-icon-natural-wonders-star16-solid.png" >
+     {% endif %}
+         {% endfor %}
+</form>
