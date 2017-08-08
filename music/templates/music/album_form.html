@@ -1,0 +1,27 @@
+{% extends 'music/base.html' %}
+
+{% block title %}Adding Album{% endblock %}
+{% block albums_active %}active{% endblock %}
+
+{% block body %}
+<div class="container-fliud">
+	<div class="row">
+		<div class="col-sm-12 col-md-7">
+			<div class="panel panel-default">
+				<div class="panel-body">
+					<form action="" class="form-horizontal" action="" method="post" enctype="multipath/form-data">
+						{% csrf_token %}
+						{% include 'music/form-template.html' %}
+						<div class="form-group">
+							<col-sm-offset-2 class="col-sm-10">
+								<button class="btn btn-success" type="submit">Submit</button>
+							</col-sm-offset-2>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+{% endblock %}
