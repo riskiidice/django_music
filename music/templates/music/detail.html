@@ -6,7 +6,7 @@
 <div class="row">
   <div class="col-sm-6 col-md-4">
     <div class="thumbnail">
-      <a href="{% url 'music:detail' album.id%}"><img src="{{ album.album_logo }}" alt="..." ></a>
+      <a href="{% url 'music:detail' album.id%}"><img src="{{ album.album_logo.url }}" alt="..." ></a>
       <div class="caption">
         <h3> {{album.album_title }}</h3>
         <p>{{ album.artist }}</p>
