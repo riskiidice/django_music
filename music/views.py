@@ -4,8 +4,11 @@ from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.core.urlresolvers import reverse_lazy
 from django.shortcuts import redirect, render
 from django.contrib.auth import authenticate, login
-from models import Album
-from .forms import UserForm
+from models import Album, Song
+from .forms import UserForm, SongAddForm
+
+AUDIO_FILE_TYPES = ['wav', 'mp3', 'ogg']
+IMAGE_FILE_TYPES = ['png', 'jpg', 'jpeg']
 
 class IndexView(generic.ListView):
     template_name = 'music/index.html'
@@ -25,6 +28,31 @@ class CreateAlbum(CreateView):
 	model = Album
 	fields = ['artist','album_title','genre','album_logo']
 
+class SongView(View):
+	form_class = SongAddForm
+	template_name = 'music/songadd_form.html'
+
+	def get(self, request, pk):
+		form = self.form_class(None)
+		return render(request, self.template_name, { 'form': form, 'album_id': pk })
+	
+	def post(self, request, pk):
+		form = self.form_class(request.POST)
+		
+		if form.is_valid():
+			song = form.save(commit=False)
+			song.album = Album.objects.get(pk=pk)
+			song.save()
+
+			return redirect('music:detail', pk)
+
+	 	return render(request, self.template_name, { 'form': form, 'album_id': pk })
+
+class SongDelete(DeleteView):
+	model = Song
+	success_url = reverse_lazy("music:index")
+
+class SongEdit()
 
 class AlbumUpdate(UpdateView):
 	model = Album
@@ -39,7 +67,7 @@ class UserFormView(View):
 	form_class = UserForm
 	template_name =  'music/registration_form.html'
 
-	#display blamk form
+	#display blank form
 	def get(self, request):
 		form = self.form_class(None)
 		return render(request, self.template_name, { 'form': form } )

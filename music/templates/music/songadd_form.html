@@ -1,0 +1,29 @@
+{% extends 'music/base.html' %}
+
+{% block title %}Adding Song{% endblock %}
+{% block albums_active %}active{% endblock %}
+
+{% block body %}
+<div class="container-fluid form-body">
+	<div class="row">
+		<div class="col-sm-12 col-md-offset-2 col-md-8">
+			<div class="panel panel-default">
+				<div class="panel-body">
+				     <h3>Song Add Form</h3>
+					<form class="form-horizontal" action="" method="post" enctype=multipart/form-data >
+					     <input type="hidden" name="album_id" value="{{ album_id }}" />
+						{% csrf_token %}
+						{% include 'music/form-template.html' %}
+						<div class="form-group">
+							<col-sm-offset-2 class="col-sm-10">
+								<button class="btn btn-success" type="submit">Submit</button>
+							</col-sm-offset-2>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+{% endblock %}
