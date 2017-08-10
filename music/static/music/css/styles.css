@@ -22,3 +22,6 @@ a.btn {
 .wrapper {
 	background-color: white;
 }
+.container-fluid.form-body {
+	margin-top:50px;
+}
