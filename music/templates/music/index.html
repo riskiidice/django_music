@@ -2,14 +2,42 @@
 
 {% block title %}All Albums{% endblock %}
 {% block body %}
+<div class="container">
 {% if all_albums %}
-<ul>
+<div class="row">
     {% for album in all_albums%}
-    <li><a href="{% url 'music:detail' album.id %}">{{ album.album_title }}</a></li>
+  
+  <div class="col-sm-6 col-md-4">
+    <div class="thumbnail">
+      <a href="{% url 'music:detail' album.id%}"><img src="{{ album.album_logo.url }}" alt="..." ></a>
+      <div class="caption">
+        <h3> {{album.album_title }}</h3>
+        <h4>{{ album.artist }}</h4>
+        
+            <a href="{% url 'music:detail' album.id%} " class="btn btn-primary" role="button" >View Detail</a>
+            <!-- Delete -->
+            <form action="{% url 'music:album-delete' album.id%}" style="display:inline" method="post">
+                 {% csrf_token %}
+                 <input type="hidden" name="album_id" value="{{album.id}}" />
+                 <button class="btn btn-default" role="button" type="submit"><span class="glyphicon glyphicon-trash"></span>
+                </button>
+            </form>
+
+            <!-- Favorite -->
+            <form action="{% url 'music:album-update' album.id%}" style="display:inline" method="post">
+              {% csrf_token %}
+             <input type="hidden" name="album_id" value="{{album.id}}" />
+             <button class="btn btn-default" role="button" type="submit"><span class="glyphicon glyphicon-star"></span>
+             </button>
+            </form>
+        
+      </div>
+    </div>
+  </div>
     {% endfor %}
-</ul>
+</div>
 {% else %}
 <h3>You don't have any album</h3>
 {%endif%}
-
+</div>
 {% endblock %}

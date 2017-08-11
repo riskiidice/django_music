@@ -7,3 +7,21 @@ body {
 .navbar-brand {
     font-family: 'Satisfy', cursive;
 }
+.glyphicon-star:hover {
+	color:yellow;
+}
+a.btn {
+	margin-right: 3px;
+}
+.container {
+	margin-top: 20px;
+}
+.thumbnail a img {
+	height: 250px;
+}
+.wrapper {
+	background-color: white;
+}
+.container-fluid.form-body {
+	margin-top:50px;
+}

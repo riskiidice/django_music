@@ -2,17 +2,63 @@
 
 {% block title %}{{album.album_title}}{% endblock %}
 {% block body %}
-<br>
-<img src="{{ album.album_logo }}" width="512">
+<div class="container">
+<div class="row">
+  <div class="col-sm-6 col-md-4">
+    <div class="thumbnail">
+      <a href="{% url 'music:detail' album.id%}"><img src="{{ album.album_logo.url }}" alt="..." ></a>
+      <div class="caption">
+        <h3> {{album.album_title }}</h3>
+        <p>{{ album.artist }}</p>
+      </div>
+    </div>
+  </div>
+  <div class="col-sm-6 col-md-8">
+  {% if error_message %}
+        <p><strong>{{ error_message }}</strong></p>
+  {% endif %}
+    <p>
+        <a href="{% url 'music:detail' album.id %}" class="btn btn-primary">View All</a>
+        <a href="{% url 'music:song-add' album.id%}" class="">Add new Song</a>
+    </p>
+    <div class="wrapper">
+      <!-- Table -->
+      <table class="table">
+            <tr>
+                <th>No.</th>
+                <th>Title</th>
+                <th>Audio File</th>
+                <th>Favorite</th>
+                <th>Action</th>
+            </tr>
+    {% for song in album.song_set.all %}
+            <tr>
+                 <td><input type="hidden" name="song_id" value="{{ song.pk }}"> {{forloop.counter}}</td>
+                <td>{{ song.song_title }}</td>
+                <td>{{ song.file_type }}</td>
+                <td>  
+                {% if song.is_favorite %}
+                    <img  width="16" src="http://cdn.mysitemyway.com/etc-mysitemyway/icons/legacy-previews/icons-256/firey-orange-jelly-icons-natural-wonders/050935-firey-orange-jelly-icon-natural-wonders-star16-solid.png" >
+                {% endif %}
+                </td>
+                <td>
+                    <p>
+                       <form action="{% url 'music:song-delete' song.pk %}" method="post" style="display:inline">
+                       {% csrf_token %} 
+                       <input type="hidden" name="next" value="{{ request.path }}">
+                        <button class="btn btn-default btn-action" type="submit"><span class="glyphicon glyphicon-trash"></span></button>
+                      </form>
+                        <a href="" class="btn btn-default btn-action"><span class="glyphicon glyphicon-pencil"></span></a>
+                        <a href="" class="btn btn-default btn-action"><span class="glyphicon glyphicon-star"></span></a>
+                    </p>
+                </td>
+            </tr>
+     {% endfor %}
+      </table>
+  </div>
+  </div>
+</div>
 
-<h1>{{ album.album_title }}</h1>
-
-<h3>{{ album.artist}}</h3>
-
-
-{% if error_message %}
-<p><strong>{{ error_message }}</strong></p>
-{% endif %}
 
 <form action="" method="post">
     {% csrf_token %} 
@@ -28,4 +74,5 @@
     {% endfor %}
     <input type="submit" value="Favorite">
 </form>
+</div>
 {% endblock %}

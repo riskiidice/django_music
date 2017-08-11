@@ -1,6 +1,6 @@
 {% extends 'music/base.html' %}
 
-{% block title %}Adding Album{% endblock %}
+{% block title %}Adding Song{% endblock %}
 {% block albums_active %}active{% endblock %}
 
 {% block body %}
@@ -9,7 +9,9 @@
 		<div class="col-sm-12 col-md-offset-2 col-md-8">
 			<div class="panel panel-default">
 				<div class="panel-body">
+				     <h3>Song Add Form</h3>
 					<form class="form-horizontal" action="" method="post" enctype=multipart/form-data >
+					     <input type="hidden" name="album_id" value="{{ album_id }}" />
 						{% csrf_token %}
 						{% include 'music/form-template.html' %}
 						<div class="form-group">
