@@ -17,10 +17,14 @@
   {% if error_message %}
         <p><strong>{{ error_message }}</strong></p>
   {% endif %}
-    <p>
+
         <a href="{% url 'music:detail' album.id %}" class="btn btn-primary">View All</a>
-        <a href="{% url 'music:song-add' album.id%}" class="">Add new Song</a>
-    </p>
+        <form action="{% url 'music:song-create' %}" method="post" style="display:inline">
+        {% csrf_token %}
+        <input type="hidden" name="album_id" value="{{album.u_id}}" />
+        <button type="submit" class="btn">Add new Song</button>
+        </form>
+  
     <div class="wrapper">
       <!-- Table -->
       <table class="table">

@@ -5,6 +5,7 @@ class Album(models.Model):
     artist = models.CharField(max_length=255)
     album_title = models.CharField(max_length=255)
     genre = models.CharField(max_length=100)
+    u_id = models.CharField(max_length=32)
     album_logo = models.FileField(upload_to='album/%Y/%m/%d')
 
     def get_absolute_url(self):

@@ -5,7 +5,8 @@ from django.core.urlresolvers import reverse_lazy
 from django.shortcuts import redirect, render
 from django.contrib.auth import authenticate, login
 from models import Album, Song
-from .forms import UserForm, SongAddForm
+from .forms import UserForm
+from django.utils.crypto import get_random_string
 
 AUDIO_FILE_TYPES = ['wav', 'mp3', 'ogg']
 IMAGE_FILE_TYPES = ['png', 'jpg', 'jpeg']
@@ -28,31 +29,29 @@ class CreateAlbum(CreateView):
 	model = Album
 	fields = ['artist','album_title','genre','album_logo']
 
-class SongView(View):
-	form_class = SongAddForm
+	def form_valid(self, form):
+		album = form.save(commit=False)
+		unique_id = get_random_string(length=32)
+		unique_id = unique_id+str(album.pk)
+		album.artist = self.request.POST.get('artist')
+		album.album_title = self.request.POST.get('album_title')
+		album.genre = self.request.POST.get('genre')
+		album.u_id = unique_id
+		album.save()
+
+		return redirect('music:index')
+
+class CreateSong(CreateView):
+	model = Song
 	template_name = 'music/songadd_form.html'
+	fields = ['song_title','file_type','is_favorite']
 
-	def get(self, request, pk):
-		form = self.form_class(None)
-		return render(request, self.template_name, { 'form': form, 'album_id': pk })
-	
-	def post(self, request, pk):
-		form = self.form_class(request.POST)
-		
-		if form.is_valid():
-			song = form.save(commit=False)
-			song.album = Album.objects.get(pk=pk)
-			song.save()
-
-			return redirect('music:detail', pk)
-
-	 	return render(request, self.template_name, { 'form': form, 'album_id': pk })
 
 class SongDelete(DeleteView):
 	model = Song
 	success_url = reverse_lazy("music:index")
 
-class SongEdit()
+
 
 class AlbumUpdate(UpdateView):
 	model = Album
